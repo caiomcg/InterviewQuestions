@@ -48,8 +48,32 @@ bool isAnagram(std::string str, std::string str2) {
     }
 }
 
+bool isAnagramV2(std::string str, std::string str2) {
+    try {
+        str  = removeUnnecessaryChars(str);
+        str2 = removeUnnecessaryChars(str2);
+
+        if (str.length() != str2.length()) {
+            return false;
+        }
+
+        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+        std::transform(str2.begin(), str2.end(), str2.begin(), ::tolower);
+
+        std::sort(str.begin(), str.end());
+        std::sort(str2.begin(), str2.end());
+
+        return str == str2;
+
+    } catch(std::exception& e) {
+        return str.length() == str2.length();
+    }
+}
+
 int main() {
     // Below should all be equal
+    std::clog << "V1" << std::endl;
+    std::clog << "---------------------------------" << std::endl;
     std::clog << isAnagram("hello world", "olehl dlorw") << std::endl;
     std::clog << isAnagram("hello world", "olehldlorw") << std::endl;
     std::clog << isAnagram("hello world", "olehl!dlorw") << std::endl;
@@ -57,5 +81,18 @@ int main() {
 
     // Below should be different
     std::clog << isAnagram("hello world", "olehl dIorw") << std::endl;
+    std::clog << "---------------------------------" << std::endl;
+
+    // Below should all be equal
+    std::clog << "V2" << std::endl;
+    std::clog << "---------------------------------" << std::endl;
+    std::clog << isAnagramV2("hello world", "olehl dlorw") << std::endl;
+    std::clog << isAnagramV2("hello world", "olehldlorw") << std::endl;
+    std::clog << isAnagramV2("hello world", "olehl!dlorw") << std::endl;
+    std::clog << isAnagramV2("!", "!") << std::endl;
+
+    // Below should be different
+    std::clog << isAnagramV2("hello world", "olehl dIorw") << std::endl;
+    std::clog << "---------------------------------" << std::endl;
     return 0;    
 }
